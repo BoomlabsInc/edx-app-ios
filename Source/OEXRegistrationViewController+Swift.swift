@@ -10,9 +10,9 @@ import Foundation
 
 extension OEXRegistrationViewController {
     
-    @objc func getRegistrationFormDescription(success: @escaping (_ response: OEXRegistrationDescription) -> ()) {
+    @objc func getRegistrationFormDescription(envoirnment: RouterEnvironment?, success: @escaping (_ response: OEXRegistrationDescription) -> ()) {
         let networkManager = self.environment.networkManager
-        let networkRequest = RegistrationFormAPI.registrationFormRequest()
+        let networkRequest = RegistrationFormAPI.registrationFormRequest(envoirnment: envoirnment)
         
         self.stream = networkManager.streamForRequest(networkRequest)
         (self.stream as! OEXStream<OEXRegistrationDescription>).listen(self) {[weak self] (result) in
@@ -31,7 +31,7 @@ extension OEXRegistrationViewController {
         let infoDict :[String: String] = [OEXAnalyticsKeyProvider: self.externalProvider?.backendName ?? ""]
         environment.analytics.trackEvent(OEXAnalytics.registerEvent(name: AnalyticsEventName.UserRegistrationClick.rawValue, displayName: AnalyticsDisplayName.CreateAccount.rawValue), forComponent: nil, withInfo: infoDict)
         
-        OEXAuthentication.registerUser(withParameters: parameter) {[weak self] (data: Data?, response: HTTPURLResponse?, error: Error?) in
+        OEXAuthentication.registerUser(withEnvoirnment: environment, parameters: parameter) {[weak self] (data: Data?, response: HTTPURLResponse?, error: Error?) in
             if let owner = self  {
                 if let data = data, error == nil {
                     let completion: ((_: Data?, _: HTTPURLResponse?, _: Error?) -> Void) = {(_ data: Data?, _ response: HTTPURLResponse?, _ error: Error?) -> Void in
