@@ -107,7 +107,7 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
 - (void)getFormFields {
     __weak typeof(self) weakSelf = self;
     
-    [self getRegistrationFormDescriptionWithEnvoirnment:self.environment success:^(OEXRegistrationDescription * _Nonnull response) {
+    [self getRegistrationFormDescriptionWithSuccess:^(OEXRegistrationDescription * _Nonnull response) {
         weakSelf.registrationDescription = response;
         [weakSelf makeFieldControllers];
         [weakSelf initializeViews];
@@ -250,9 +250,8 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
 - (BOOL)emailMatchesTo:(NSString*)confirmEmail {
     if (([[self email] isEqualToString:@""] == NO) && ([confirmEmail isEqualToString:@""] == NO)) {
         return [[self email] isEqualToString:confirmEmail];
-    } else {
-        return false;
     }
+    return false;
 }
 
 - (void)refreshFormFields {
@@ -273,9 +272,11 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
         }
         
         if([[fieldController field].name isEqualToString:@"email"]) {
-            if([fieldController isValidInput]) {
-                if([fieldController hasValue]) {
+            if([fieldController hasValue]) {
+                if([fieldController isValidInput]) {
                     self.email = [fieldController currentValue];
+                } else {
+                    self.email = @"";
                 }
             } else {
                 self.email = @"";
@@ -283,8 +284,8 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
         }
         
         if([[fieldController field].name isEqualToString:@"confirm_email"]) {
-            if([fieldController isValidInput]) {
-                if([fieldController hasValue]) {
+            if([fieldController hasValue]) {
+                if([fieldController isValidInput]) {
                     if ([self.email isEqualToString:[fieldController currentValue]] == NO) {
                         [fieldController handleError:fieldController.field.errorMessage.required];
                     }

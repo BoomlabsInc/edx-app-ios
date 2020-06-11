@@ -32,8 +32,8 @@ typedef void (^ OEXURLRequestHandler)(NSData* _Nullable data, NSHTTPURLResponse*
 
 + (void)resetPasswordWithEmailId:(NSString*)email completionHandler:(OEXURLRequestHandler)completionBlock;
 
-+ (void)registerUserWithEnvoirnment:(RouterEnvironment*)envoirnment
-                        parameters:(NSDictionary*)parameters
++ (void)registerUserWithParameters:(NSDictionary*)parameters
+                        apiVersion:(NSString*)apiVersion
                  completionHandler:(OEXURLRequestHandler)handler;
 
 @end

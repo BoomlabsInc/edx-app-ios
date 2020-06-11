@@ -14,9 +14,8 @@ public struct RegistrationFormAPI {
         return json.dictionaryObject.map { OEXRegistrationDescription(dictionary: $0) }.toResult()
     }
     
-    public static func registrationFormRequest(envoirnment: RouterEnvironment?) -> NetworkRequest<(OEXRegistrationDescription)> {
-        let apiVersion = envoirnment?.config.apiUrlVersionConfig.registration ?? APIURLDefaultVersion.registration.rawValue        
-        let path = NSString.oex_string(withFormat: SIGN_UP_URL, parameters: ["version" : apiVersion])
+    public static func registrationFormRequest(version: String) -> NetworkRequest<(OEXRegistrationDescription)> {
+        let path = NSString.oex_string(withFormat: SIGN_UP_URL, parameters: ["version" : version])
         
         return NetworkRequest(method: .GET,
                               path: path,
