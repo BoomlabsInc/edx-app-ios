@@ -113,6 +113,7 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
         [weakSelf initializeViews];
         [weakSelf checkIfResumingRegistration];
         [weakSelf refreshFormFields];
+        [weakSelf populateDefaultFormFields];
     }];
 }
 
@@ -254,7 +255,7 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
     return false;
 }
 
-- (void)refreshFormFields {
+- (void)populateDefaultFormFields {
     for(id <OEXRegistrationFieldController>fieldController in self.fieldControllers) {
         if (([fieldController.field.defaultValue isEqualToString:@""] == NO) ) {
             if([[fieldController field].name isEqualToString:@"name"]) {
@@ -270,25 +271,21 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
                 [fieldController setValue:fieldController.field.defaultValue];
             }
         }
-        
+    }
+}
+
+- (void)refreshFormFields {
+    for(id <OEXRegistrationFieldController>fieldController in self.fieldControllers) {
         if([[fieldController field].name isEqualToString:@"email"]) {
-            if([fieldController hasValue]) {
-                if([fieldController isValidInput]) {
-                    self.email = [fieldController currentValue];
-                } else {
-                    self.email = @"";
-                }
-            } else {
-                self.email = @"";
-            }
+            self.email = [fieldController currentValue];
         }
         
         if([[fieldController field].name isEqualToString:@"confirm_email"]) {
-            if([fieldController hasValue]) {
-                if([fieldController isValidInput]) {
-                    if ([self.email isEqualToString:[fieldController currentValue]] == NO) {
-                        [fieldController handleError:fieldController.field.errorMessage.required];
-                    }
+            if([fieldController hasValue] && [fieldController isValidInput]) {
+                if ([self.email isEqualToString:[fieldController currentValue]]) {
+                    [fieldController handleError:NULL];
+                } else {
+                    [fieldController handleError:fieldController.field.errorMessage.required];
                 }
             }
         }
