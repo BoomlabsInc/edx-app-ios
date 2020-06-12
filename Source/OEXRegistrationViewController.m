@@ -537,9 +537,12 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
     
     [[UIAlertController alloc] showAlertWithTitle:[Strings registrationErrorAlertTitle] message:[Strings registrationErrorAlertMessage] cancelButtonTitle:[Strings ok] onViewController:self tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger index) {
         for(id <OEXRegistrationFieldController> controller in weakSelf.fieldControllers) {
-            if(![controller isValidInput]) {
-                    [[controller accessibleInputField] becomeFirstResponder];
-                    break;
+            if([[controller field].name isEqualToString:@"confirm_email"] && ([self emailMatchesTo:[controller field].name] == NO)) {
+                [[controller accessibleInputField] becomeFirstResponder];
+                break;
+            } else if(![controller isValidInput]) {
+                [[controller accessibleInputField] becomeFirstResponder];
+                break;
             }
         }
     }];
