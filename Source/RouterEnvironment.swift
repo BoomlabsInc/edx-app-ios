@@ -15,7 +15,7 @@ import UIKit
     let reachability: Reachability
     let interface: OEXInterface?
     let networkManager: NetworkManager
-    weak  var router: OEXRouter?
+    weak var router: OEXRouter?
     let session: OEXSession
     let styles: OEXStyles
     

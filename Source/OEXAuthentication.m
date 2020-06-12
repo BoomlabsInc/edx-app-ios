@@ -210,7 +210,7 @@ OEXNSDataTaskRequestHandler OEXWrapURLCompletion(OEXURLRequestHandler completion
     }];
 }
 
-+ (void)registerUserWithParameters:(NSDictionary *)parameters apiVersion:(NSString *)apiVersion completionHandler:(OEXURLRequestHandler)handler {
++ (void)registerUserWithApiVersion:(NSString *)apiVersion paramaters:(NSDictionary *)parameters completionHandler:(OEXURLRequestHandler)handler {
     NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSString* path = [NSString oex_stringWithFormat:SIGN_UP_URL parameters:@{@"version" : apiVersion}];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [OEXConfig sharedConfig].apiHostURL, path]]];

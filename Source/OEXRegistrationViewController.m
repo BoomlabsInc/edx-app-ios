@@ -249,24 +249,25 @@ NSString* const OEXExternalRegistrationWithExistingAccountNotification = @"OEXEx
 }
 
 - (BOOL)emailMatchesTo:(NSString*)confirmEmail {
-    if (([[self email] isEqualToString:@""] == NO) && ([confirmEmail isEqualToString:@""] == NO)) {
-        return [[self email] isEqualToString:confirmEmail];
-    }
-    return false;
+    return [[self email] isEqualToString:confirmEmail];
 }
 
 - (void)populateDefaultFormFields {
     for(id <OEXRegistrationFieldController>fieldController in self.fieldControllers) {
         if (([fieldController.field.defaultValue isEqualToString:@""] == NO) ) {
+            
             if([[fieldController field].name isEqualToString:@"name"]) {
                 [fieldController setValue:fieldController.field.defaultValue];
             }
+            
             if([[fieldController field].name isEqualToString:@"username"]) {
                 [fieldController setValue:fieldController.field.defaultValue];
             }
+            
             if([[fieldController field].name isEqualToString:@"email"]) {
                 [fieldController setValue:fieldController.field.defaultValue];
             }
+            
             if([[fieldController field].name isEqualToString:@"confirm_email"]) {
                 [fieldController setValue:fieldController.field.defaultValue];
             }
